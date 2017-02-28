@@ -19,6 +19,9 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
     next();
 });
+//get END POINT
+
+app.get('/api/message', GetMessages);
 
 // post END POINT
 app.post('/api/message', function(req, res) {
@@ -30,9 +33,9 @@ app.post('/api/message', function(req, res) {
 });
 
 // Function retrive all the messages
-function GetMessages() {
+function GetMessages(req, res) {
     Message.find({}).exec(function(err, result) {
-        console.log(result);
+        res.send(result); //instead of outputting the result to the console, we will be sending it and the response with "response.send" and we'll just pass in the result
     });
 }
 
@@ -41,8 +44,6 @@ mongoose.connect("mongodb://localhost:27017/test", function(err, db) {
 
     if (!err) {
         console.log("we are connected to mongo");
-        GetMessages(); // calling  Function retrive all the messages
-
     }
 
 });
