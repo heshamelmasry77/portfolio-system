@@ -1,9 +1,13 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
-var mongo = require('mongodb').MongoClient;
+var mongoose = require('mongoose');
 
-var database;
+
+// Schema for message
+var Message = mongoose.model('Message', {
+    msg: String
+});
 // Telling express to use body parser
 app.use(bodyParser.json());
 
@@ -19,15 +23,25 @@ app.use(function(req, res, next) {
 // post END POINT
 app.post('/api/message', function(req, res) {
     console.log(req.body);
-    database.collection('messages').insertOne(req.body);
+
+    var message = new Message(req.body);
+    message.save();
     res.status(200);
 });
 
-mongo.connect("mongodb://localhost:27017/test", function(err, db) {
+// Function retrive all the messages
+function GetMessages() {
+    Message.find({}).exec(function(err, result) {
+        console.log(result);
+    });
+}
+
+
+mongoose.connect("mongodb://localhost:27017/test", function(err, db) {
 
     if (!err) {
         console.log("we are connected to mongo");
-        database = db;
+        GetMessages(); // calling  Function retrive all the messages
 
     }
 
