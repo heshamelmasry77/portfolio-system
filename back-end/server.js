@@ -5,6 +5,15 @@ var bodyParser = require('body-parser');
 // Telling express to use body parser
 app.use(bodyParser.json());
 
+
+// enable CORES, or Cross-Origin Resource Sharing with Express
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    next();
+});
+
 // post END POINT
 app.post('/api/message', function(req, res) {
     console.log(req.body);
