@@ -1,11 +1,24 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
+// fs is file system
 var fs = require('fs');
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var multer = require('multer');
+
+
+
+
+// enable CORES, or Cross-Origin Resource Sharing with Express
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    next();
+});
+
 
 
 // Schema for image upload
@@ -19,10 +32,9 @@ var Item = new Schema({
 });
 var ItemSchema = mongoose.model('Clothes', Item);
 
-var multer = require('multer');
-var upload = multer({
-    dest: './uploads'
-});
+// var upload = multer({
+//     dest: './uploads'
+// });
 
 //
 // app.use(multer({
@@ -36,9 +48,10 @@ var upload = multer({
 
 app.post('/api/photo', function(req, res) {
     var newItem = new ItemSchema();
+    // THIS WILL COME FROM ANGULAR FORM
     // newItem.img.data = fs.readFileSync(req.files.userPhoto.path)
-    newItem.img.data = fs.readFileSync('/Users/heshamelmasry/Desktop/Screen Shot 2017-02-28 at 4.47.04 PM.png')
-    newItem.img.contentType = 'image / png';
+    newItem.img.data = fs.readFileSync('/Users/heshamelmasry/Desktop/FerreroRocher.jpg')
+    newItem.img.contentType = 'image / jpg';
 
     console.log(req.body);
 
@@ -49,6 +62,20 @@ app.post('/api/photo', function(req, res) {
 
 
 
+app.get('/api/photo', function(req, res) {
+
+
+    ItemSchema.find({}).exec(function(err, result) {
+
+        console.log(result);
+        res.send(result);
+    });
+});
+
+
+
+
+
 // Schema for message
 var Message = mongoose.model('Message', {
     msg: String
@@ -56,14 +83,6 @@ var Message = mongoose.model('Message', {
 // Telling express to use body parser
 app.use(bodyParser.json());
 
-
-// enable CORES, or Cross-Origin Resource Sharing with Express
-
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    next();
-});
 
 //get END POINT message
 

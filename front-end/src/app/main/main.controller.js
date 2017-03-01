@@ -5,6 +5,18 @@ export class MainController {
 
     this.$http = $http;
     this.getMessages();
+    this.getImages();
+  }
+
+
+  getImages() {
+    var vm = this;
+    this.$http.get('http://localhost:5000/api/photo').then(function(result) {
+
+      console.log(result);
+
+      // vm.photos = result.data;
+    });
   }
 
   // Adding my functions
