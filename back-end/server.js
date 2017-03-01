@@ -1,7 +1,52 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
+var fs = require('fs');
+
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var multer = require('multer');
+
+
+// Schema for image upload
+
+
+var Item = new Schema({
+    img: {
+        data: Buffer,
+        contentType: String
+    }
+});
+var ItemSchema = mongoose.model('Clothes', Item);
+
+var multer = require('multer');
+var upload = multer({
+    dest: './uploads'
+});
+
+//
+// app.use(multer({
+//     dest: '. / uploads / ',
+//     rename: function(fieldname, filename) {
+//         return filename;
+//     },
+// }));
+
+
+
+app.post('/api/photo', function(req, res) {
+    var newItem = new ItemSchema();
+    // newItem.img.data = fs.readFileSync(req.files.userPhoto.path)
+    newItem.img.data = fs.readFileSync('/Users/heshamelmasry/Desktop/Screen Shot 2017-02-28 at 4.47.04 PM.png')
+    newItem.img.contentType = 'image / png';
+
+    console.log(req.body);
+
+    newItem.save();
+    res.status(200);
+
+});
+
 
 
 // Schema for message
@@ -19,11 +64,12 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
     next();
 });
-//get END POINT
+
+//get END POINT message
 
 app.get('/api/message', GetMessages);
 
-// post END POINT
+// post END POINT message
 app.post('/api/message', function(req, res) {
     console.log(req.body);
 
@@ -31,6 +77,8 @@ app.post('/api/message', function(req, res) {
     message.save();
     res.status(200);
 });
+
+
 
 // Function retrive all the messages
 function GetMessages(req, res) {
