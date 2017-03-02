@@ -34,6 +34,36 @@
         </li>
       </ul>
 
+
+
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Images
+    </div>
+    <div class="panel-body">
+
+      <ul class="list-group">
+        <li class="list-group-item" ng-repeat="image in main.images">
+
+          <!-- <p>
+            {{image.img.data.data}}
+          </p> -->
+
+          <img data-ng-src="data:image/jpeg;base64,{{image.img.base64}}" />
+
+
+
+
+
+
+        </li>
+      </ul>
+
+
+
     </div>
   </div>
 

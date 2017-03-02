@@ -6,16 +6,43 @@ export class MainController {
     this.$http = $http;
     this.getMessages();
     this.getImages();
+
+
+
   }
 
 
+
+
   getImages() {
+
+
+
     var vm = this;
+
+    vm.arrayBufferToBase64 = function(buffer) {
+
+      console.log(buffer);
+      var binary = '';
+      var bytes = new Uint8Array(buffer);
+      var len = bytes.byteLength;
+      for (var i = 0; i < len; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      return window.btoa(binary);
+    }
+
     this.$http.get('http://localhost:5000/api/photo').then(function(result) {
 
-      console.log(result);
 
-      // vm.photos = result.data;
+      result.data.forEach(
+        function(x) {
+          x.img.base64 = vm.arrayBufferToBase64(x.img.data.data);
+
+        });
+      vm.images = result.data;
+      console.log(result.data);
+
     });
   }
 

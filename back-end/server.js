@@ -51,7 +51,7 @@ app.post('/api/photo', function(req, res) {
     // THIS WILL COME FROM ANGULAR FORM
     // newItem.img.data = fs.readFileSync(req.files.userPhoto.path)
     newItem.img.data = fs.readFileSync('/Users/heshamelmasry/Desktop/FerreroRocher.jpg')
-    newItem.img.contentType = 'image / jpg';
+    newItem.img.contentType = 'image/png';
 
     console.log(req.body);
 
